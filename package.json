@@ -1,0 +1,14 @@
+{
+  "name": "fantacalcio-asta",
+  "version": "1.0.0",
+  "description": "A webapp for a fantacalcio auction with Socket.io",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.0"
+  }
+}
+
