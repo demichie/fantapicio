@@ -17,9 +17,7 @@ const placeBidButton = document.getElementById('place-bid-button');
 
 // Event listener for joining the auction
 document.getElementById('join-button').addEventListener('click', () => {
-    alert('ciao');
     const nameInput = document.getElementById('name-input').value;
-    alert(`nameInpute ${nameInput}`);
     if (nameInput) {
         userName = nameInput;
         socket.emit('registerParticipant', userName);
@@ -46,17 +44,14 @@ socket.on('gameReady', () => {
 // Handle player nomination
 document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
-    alert(`playerName ${playerName}!`);
-
     if (playerName) {
-        socket.emit('nominatePlayer', ( name: userName, player: playerName));
+        socket.emit('nominatePlayer', { name: userName, player: playerName });
     }
 });
 
 // Update the current player and hide bid section until allowed
 socket.on('playerNominated', (data) => {
     playerInput.value = ''; // Clear the input field
-    alert(`${data.bidder} start the auction for ${data.player} with a bid of ${data.currentBid}!`);
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
     currentBidderEl.textContent = data.bidder;
@@ -66,33 +61,23 @@ socket.on('playerNominated', (data) => {
     document.getElementById('bid-section').style.display = 'none';
 });
 
-// Block the timer when the button is clicked
+// Block the timer and show the bid section
 blockTimerButton.addEventListener('click', () => {
     document.getElementById('bid-section').style.display = 'block';
     document.getElementById('block-section').style.display = 'none';
     bidInput.value = ''; // Clear any previous bid
 });
 
-// Allow the user to place a bid if they are the one who blocked the timer
-socket.on('allowBid', () => {
-    bidSection.style.display = 'block';
-    bidInput.value = ''; // Clear any previous bid
-});
-
-// Place a bid and show an alert with bid details
+// Place a bid
 placeBidButton.addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
     if (!isNaN(bidAmount) && bidAmount > 0) {
-        // Hide bid section before placing bid
-        bidSection.style.display = 'none'; 
-        bidInput.value = ''; // Clear the input field
-
-        // Optionally, show an alert with the bid details
-        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
-
         // Emit the placeBid event with the user's name and bid amount
         socket.emit('placeBid', { name: userName, amount: bidAmount });
-        
+
+        // Hide bid section before placing bid
+        bidSection.style.display = 'none';
+        bidInput.value = ''; // Clear the input field
     }
 });
 
@@ -100,10 +85,7 @@ placeBidButton.addEventListener('click', () => {
 socket.on('bidPlaced', (data) => {
     currentBidEl.textContent = data.amount;
     currentBidderEl.textContent = data.bidder;
-    document.getElementById('nomination-section').style.display = 'none';
-    document.getElementById('current-auction').style.display = 'none';
-    document.getElementById('block-section').style.display = 'block';
-    document.getElementById('bid-section').style.display = 'none';
+    document.getElementById('block-section').style.display = 'block'; // Allow others to block the timer again
 });
 
 // Update the timer display
@@ -114,14 +96,14 @@ socket.on('timerUpdate', (timeLeft) => {
 // Notify when the auction ends
 socket.on('auctionEnd', (data) => {
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
-    document.getElementById('nomination-section').style.display = 'block';
+    document.getElementById('nomination-section').style.display = 'block'; // Allow the next nomination
     document.getElementById('current-auction').style.display = 'none';
     document.getElementById('block-section').style.display = 'none';
     document.getElementById('bid-section').style.display = 'none';
     timerEl.textContent = '10'; // Reset timer display
 });
 
-// Handle bid errors and display alerts
+// Handle bid errors
 socket.on('bidError', (message) => {
     alert(message);
     bidSection.style.display = 'block'; // Show bid section if there was an error

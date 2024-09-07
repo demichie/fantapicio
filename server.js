@@ -10,11 +10,12 @@ let currentPlayer = null;
 let currentBid = 1;
 let currentBidder = null;
 let auctionTimeout = null;
+let timer = null;
 
-// let auctionInProgress = false; // Track if an auction is ongoing
-
+// Serve static files from the "public" directory
 app.use(express.static('public'));
 
+// Handle socket connections
 io.on('connection', (socket) => {
     // Handle participant registration
     socket.on('registerParticipant', (name) => {
@@ -32,12 +33,12 @@ io.on('connection', (socket) => {
         currentBidder = data.name;
         currentBid = 1; // Starting bid of 1
 
-
         io.emit('playerNominated', {
             player: currentPlayer,
             currentBid: currentBid,
             bidder: currentBidder
         });
+
         // Start the auction timer after nomination
         startAuctionTimer();
     });
@@ -60,25 +61,19 @@ io.on('connection', (socket) => {
         }
     });
 
-    function stopAuctionTimer() {
-        clearInterval(timer);
-    }
-
     // Timer functionality
     function startAuctionTimer() {
         if (auctionTimeout) clearTimeout(auctionTimeout);
         let timeLeft = 10;
 
-        const interval = setInterval(() => {
+        timer = setInterval(() => {
             io.emit('timerUpdate', timeLeft);
             if (timeLeft <= 0) {
-                clearInterval(interval);
+                clearInterval(timer);
                 auctionEnd();
             }
             timeLeft--;
         }, 1000);
-
-        auctionTimeout = interval;
     }
 
     // Handle auction end
@@ -102,8 +97,14 @@ io.on('connection', (socket) => {
 
         io.emit('participantsUpdate', participants);
     }
+
+    // Disconnect event handling if needed
+    socket.on('disconnect', () => {
+        // Optional: handle disconnection if necessary (e.g., remove participant)
+    });
 });
 
+// Start the server
 server.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
