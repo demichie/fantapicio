@@ -44,6 +44,8 @@ socket.on('gameReady', () => {
 // Handle player nomination
 document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
+    alert(`playerName ${playerName}!`);
+
     if (playerName) {
         socket.emit('nominatePlayer', ( name: userName, player: playerName));
     }
