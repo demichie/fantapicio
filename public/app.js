@@ -50,13 +50,14 @@ document.getElementById('nominate-button').addEventListener('click', () => {
 
 // Update the current player and hide bid section until allowed
 socket.on('playerNominated', (data) => {
-    nominationSection.style.display = 'none'; 
     playerInput.value = ''; // Clear the input field
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
     currentBidderEl.textContent = data.bidder;
+    document.getElementById('nomination-section').style.display = 'none';
     document.getElementById('current-auction').style.display = 'block';
-    bidSection.style.display = 'none'; // Hide bid section until someone blocks the timer
+    document.getElementById('block-timer-button').style.display = 'block';
+    document.getElementById('bid-section').style.display = 'none';
 });
 
 // Block the timer when the button is clicked
@@ -90,7 +91,10 @@ placeBidButton.addEventListener('click', () => {
 socket.on('bidPlaced', (data) => {
     currentBidEl.textContent = data.amount;
     currentBidderEl.textContent = data.bidder;
-    blockTimerButton.style.display = 'block'; // Show block timer button for the next round
+    document.getElementById('nomination-section').style.display = 'none';
+    document.getElementById('current-auction').style.display = 'none';
+    document.getElementById('block-timer-button').style.display = 'block';
+    document.getElementById('bid-section').style.display = 'none';
 });
 
 // Update the timer display
@@ -101,8 +105,10 @@ socket.on('timerUpdate', (timeLeft) => {
 // Notify when the auction ends
 socket.on('auctionEnd', (data) => {
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
+    document.getElementById('nomination-section').style.display = 'block';
     document.getElementById('current-auction').style.display = 'none';
-    nominationSection.style.display = 'block'; 
+    document.getElementById('block-timer-button').style.display = 'none';
+    document.getElementById('bid-section').style.display = 'none';
     timerEl.textContent = '10'; // Reset timer display
 });
 
