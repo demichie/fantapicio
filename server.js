@@ -10,6 +10,7 @@ let currentPlayer = null;
 let currentBid = 1;
 let currentBidder = null;
 let auctionTimeout = null;
+// let auctionInProgress = false; // Track if an auction is ongoing
 
 app.use(express.static('public'));
 
@@ -43,7 +44,7 @@ io.on('connection', (socket) => {
 
     // Handle bid blocking (timer stopping)
     socket.on('blockTimer', (name) => {
-        if (auctionInProgress && !currentBidder) {
+        if (!currentBidder) {
             stopAuctionTimer();
             currentBidder = name;
             // io.emit('allowBid', { bidder: currentBidder, currentBid });
