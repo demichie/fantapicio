@@ -62,6 +62,7 @@ io.on('connection', (socket) => {
             currentBidder = bidData.name;
             io.emit('bidPlaced', { bidder: currentBidder, amount: currentBid });
             startAuctionTimer(); // Restart the timer after a new bid
+            io.emit('allowBid', { bidder: currentBidder, currentBid });
         }
     });
 
@@ -102,5 +103,4 @@ io.on('connection', (socket) => {
 });
 
 server.listen(3000, () => console.log('Server listening on port 3000'));
-
 

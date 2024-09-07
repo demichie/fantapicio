@@ -73,7 +73,8 @@ document.getElementById('place-bid-button').addEventListener('click', () => {
 socket.on('bidPlaced', (data) => {
     currentBidEl.textContent = data.amount;
     currentBidderEl.textContent = data.bidder;
-    blockTimerButton.style.display = 'block'; // Allow timer blocking again
+    // Allow timer blocking again
+    blockTimerButton.style.display = 'block'; 
 });
 
 socket.on('timerUpdate', (timeLeft) => {
