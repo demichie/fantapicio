@@ -10,7 +10,6 @@ let currentPlayer = null;
 let currentBid = 1;
 let currentBidder = null;
 let auctionTimeout = null;
-let timer = null; // Auction timer
 
 // let auctionInProgress = false; // Track if an auction is ongoing
 
@@ -42,15 +41,6 @@ io.on('connection', (socket) => {
         });
         // Start the auction timer after nomination
         startAuctionTimer();
-    });
-
-    // Handle bid blocking (timer stopping)
-    socket.on('blockTimer', (name) => {
-        if (!currentBidder) {
-            stopAuctionTimer();
-            currentBidder = name;
-            // io.emit('allowBid', { bidder: currentBidder, currentBid });
-        }
     });
 
     // Handle placing bids
