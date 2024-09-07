@@ -1,37 +1,78 @@
 const socket = io();
+let userName = null;
 
-// Elements to update
+const nameInputSection = document.getElementById('name-input-section');
+const auctionSection = document.getElementById('auction-section');
 const participantsList = document.getElementById('participants-list');
-const currentOfferEl = document.getElementById('current-offer');
+const playerInput = document.getElementById('player-input');
+const currentPlayerEl = document.getElementById('current-player');
+const currentBidEl = document.getElementById('current-bid');
 const currentBidderEl = document.getElementById('current-bidder');
-const bidButton = document.getElementById('bid-button');
+const timerEl = document.getElementById('timer');
+const blockTimerButton = document.getElementById('block-timer-button');
+const bidSection = document.getElementById('bid-section');
+const bidInput = document.getElementById('bid-input');
 
-// Update the participants section
+document.getElementById('join-button').addEventListener('click', () => {
+  const nameInput = document.getElementById('name-input').value;
+  if (nameInput) {
+    userName = nameInput;
+    socket.emit('registerParticipant', userName);
+    nameInputSection.style.display = 'none';
+  }
+});
+
 socket.on('participantsUpdate', (participants) => {
-  participantsList.innerHTML = ''; // Clear existing list
+  participantsList.innerHTML = '';
   participants.forEach((participant) => {
     const li = document.createElement('li');
-    li.textContent = `${participant.name} - Budget: ${participant.budget}, Players Bought: ${participant.playersBought}`;
+    li.textContent = `${participant.name} - Budget: ${participant.budget}`;
     participantsList.appendChild(li);
   });
 });
 
-// Update the current offer on the screen
-socket.on('newOffer', (offer) => {
-  currentOfferEl.textContent = offer.amount;
-  currentBidderEl.textContent = offer.participant;
+socket.on('gameReady', () => {
+  auctionSection.style.display = 'block';
 });
 
-// Handle auction end event
-socket.on('auctionEnd', (winner) => {
-  alert(`${winner.participant} wins the auction with an offer of ${winner.amount}!`);
+document.getElementById('nominate-button').addEventListener('click', () => {
+  const playerName = playerInput.value;
+  if (playerName) {
+    socket.emit('nominatePlayer', playerName);
+    playerInput.value = '';
+  }
 });
 
-// Sample function to place a bid (for demo purposes, this would be more interactive)
-bidButton.addEventListener('click', () => {
-  const bidAmount = prompt('Enter your bid amount:');
-  const participantName = prompt('Enter your name:');
-
-  socket.emit('newBid', { participant: participantName, amount: parseInt(bidAmount) });
+socket.on('playerNominated', (data) => {
+  currentPlayerEl.textContent = data.player;
+  currentBidEl.textContent = data.currentBid;
+  currentBidderEl.textContent = 'None';
+  document.getElementById('current-auction').style.display = 'block';
+  bidSection.style.display = 'none';
 });
+
+blockTimerButton.addEventListener('click', () => {
+  socket.emit('blockTimer', userName);
+});
+
+socket.on('allowBid', (data) => {
+  if (data.bidder === userName) {
+    bidSection.style.display = 'block';
+  }
+});
+
+document.getElementById('place-bid-button').addEventListener('click', () => {
+  const bidAmount = parseInt(bidInput.value);
+  if (bidAmount > 0) {
+    socket.emit('placeBid', { name: userName, amount: bidAmount });
+  }
+  bidInput.value = '';
+  bidSection.style.display = 'none';
+});
+
+socket.on('bidPlaced', (data) => {
+  currentBidEl.textContent = data.amount;
+  currentBidderEl.textContent = data.bidder;
+});
+
 
