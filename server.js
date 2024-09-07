@@ -37,12 +37,17 @@ io.on('connection', (socket) => {
             currentBid: currentBid,
             bidder: nominator ? nominator.name : 'Unknown'
         });
-
-        // Allow bidding after nomination
-        io.emit('allowBid');
-
         // Start the auction timer after nomination
         startAuctionTimer();
+    });
+
+    // Handle bid blocking (timer stopping)
+    socket.on('blockTimer', (name) => {
+        if (auctionInProgress && !currentBidder) {
+            stopAuctionTimer();
+            currentBidder = name;
+            io.emit('allowBid', { bidder: currentBidder, currentBid });
+        }
     });
 
     // Handle placing bids
