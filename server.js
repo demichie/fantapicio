@@ -68,6 +68,10 @@ io.on('connection', (socket) => {
         }
     });
 
+    function stopAuctionTimer() {
+        clearInterval(timer);
+    }
+
     // Timer functionality
     function startAuctionTimer() {
         if (auctionTimeout) clearTimeout(auctionTimeout);
