@@ -20,8 +20,8 @@ document.getElementById('join-button').addEventListener('click', () => {
     const nameInput = document.getElementById('name-input').value;
     if (nameInput) {
         userName = nameInput;
-        socket.emit('registerParticipant', userName);
         nameInputSection.style.display = 'none';
+        socket.emit('registerParticipant', userName);
     }
 });
 
@@ -37,6 +37,7 @@ socket.on('participantsUpdate', (participants) => {
 
 // Notify when the game is ready
 socket.on('gameReady', () => {
+    document.getElementById('name-input-section').style.display = 'none';
     document.getElementById('auction-section').style.display = 'block';
 });
 
