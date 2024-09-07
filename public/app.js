@@ -63,6 +63,8 @@ socket.on('playerNominated', (data) => {
 // Block the timer when the button is clicked
 blockTimerButton.addEventListener('click', () => {
     socket.emit('blockTimer', userName);
+    bidSection.style.display = 'block';
+    bidInput.value = ''; // Clear any previous bid
 });
 
 // Allow the user to place a bid if they are the one who blocked the timer

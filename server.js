@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
         if (auctionInProgress && !currentBidder) {
             stopAuctionTimer();
             currentBidder = name;
-            io.emit('allowBid', { bidder: currentBidder, currentBid });
+            // io.emit('allowBid', { bidder: currentBidder, currentBid });
         }
     });
 
