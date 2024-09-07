@@ -44,14 +44,14 @@ socket.on('gameReady', () => {
 document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
     if (playerName) {
-        nominationSection.style.display = 'none'; 
-        playerInput.value = ''; // Clear the input field
         socket.emit('nominatePlayer', playerName);
     }
 });
 
 // Update the current player and hide bid section until allowed
 socket.on('playerNominated', (data) => {
+    nominationSection.style.display = 'none'; 
+    playerInput.value = ''; // Clear the input field
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
     currentBidderEl.textContent = data.bidder;
@@ -102,6 +102,7 @@ socket.on('timerUpdate', (timeLeft) => {
 socket.on('auctionEnd', (data) => {
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
     document.getElementById('current-auction').style.display = 'none';
+    nominationSection.style.display = 'none'; 
     timerEl.textContent = '10'; // Reset timer display
 });
 
