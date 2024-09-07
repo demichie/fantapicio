@@ -63,9 +63,12 @@ socket.on('allowBid', (data) => {
 
 document.getElementById('place-bid-button').addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
-    socket.emit('placeBid', { name: userName, amount: bidAmount });
-    bidInput.value = '';
-    bidSection.style.display = 'none';
+    if (!isNaN(bidAmount)) {
+        // alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
+        socket.emit('placeBid', { name: userName, amount: bidAmount });
+        bidInput.value = '';
+        bidSection.style.display = 'none';
+    }
 });
 
 socket.on('bidPlaced', (data) => {
