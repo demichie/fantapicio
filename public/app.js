@@ -10,6 +10,7 @@ const currentBidEl = document.getElementById('current-bid');
 const currentBidderEl = document.getElementById('current-bidder');
 const timerEl = document.getElementById('timer');
 const blockTimerButton = document.getElementById('block-timer-button');
+const nominateSection = document.getElementById('nominate-section');
 const bidSection = document.getElementById('bid-section');
 const bidInput = document.getElementById('bid-input');
 const placeBidButton = document.getElementById('place-bid-button');
@@ -43,10 +44,9 @@ socket.on('gameReady', () => {
 document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
     if (playerName) {
-        playerInput.style.display = 'none'; 
+        nominateSection.style.display = 'none'; 
         playerInput.value = ''; // Clear the input field
         socket.emit('nominatePlayer', playerName);
-        playerInput.value = '';
     }
 });
 
