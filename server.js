@@ -66,7 +66,7 @@ io.on('connection', (socket) => {
             console.log('Updated currentBid:', currentBid); // Log updated bid
             io.emit('bidPlaced', { bidder: currentBidder, amount: currentBid });
             startAuctionTimer(); // Restart the timer after a new bid
-            io.emit('allowBid', { bidder: currentBidder, currentBid });
+            io.emit('completeBid', { bidder: currentBidder, currentBid });
         } else {
             socket.emit('bidError', 'Invalid bid amount or budget.');
         }

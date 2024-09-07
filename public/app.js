@@ -67,8 +67,13 @@ blockTimerButton.addEventListener('click', () => {
 // Allow the user to place a bid if they are the one who blocked the timer
 socket.on('allowBid', () => {
     bidInput.value = '';
+    bidSection.style.display = 'block';
+});
+
+// Allow the user to place a bid if they are the one who blocked the timer
+socket.on('completeBid', () => {
+    bidInput.value = '';
     bidSection.style.display = 'none';
-    auctionSection.style.display = 'block';
 });
 
 // Place a bid and show an alert with bid details
