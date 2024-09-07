@@ -102,7 +102,7 @@ socket.on('timerUpdate', (timeLeft) => {
 socket.on('auctionEnd', (data) => {
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
     document.getElementById('current-auction').style.display = 'none';
-    nominationSection.style.display = 'none'; 
+    nominationSection.style.display = 'block'; 
     timerEl.textContent = '10'; // Reset timer display
 });
 
