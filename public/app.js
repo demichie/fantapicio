@@ -74,12 +74,11 @@ socket.on('allowBid', () => {
 placeBidButton.addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
     if (!isNaN(bidAmount) && bidAmount > 0) {
-        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
+        bidSection.style.display = 'none';
         socket.emit('placeBid', { name: userName, amount: bidAmount });
 
         // Hide bid section and clear input after bid is placed
         bidInput.value = '';
-        bidSection.style.display = 'none';
     }
 });
 
