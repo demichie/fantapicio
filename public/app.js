@@ -61,6 +61,19 @@ socket.on('allowBid', (data) => {
   }
 });
 
+// Listen for timer updates from the server
+socket.on('timerUpdate', (timeLeft) => {
+    timerEl.textContent = timeLeft; // Update the displayed time
+});
+
+// Handle auction end
+socket.on('auctionEnd', (data) => {
+    alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
+    document.getElementById('current-auction').style.display = 'none';
+    timerEl.textContent = '10'; // Reset timer display
+});
+
+
 document.getElementById('place-bid-button').addEventListener('click', () => {
   const bidAmount = parseInt(bidInput.value);
   if (bidAmount > 0) {
