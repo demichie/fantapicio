@@ -25,17 +25,17 @@ io.on('connection', (socket) => {
     });
 
     // Handle player nomination
-    socket.on('nominatePlayer', (player) => {
-        currentPlayer = player;
+    socket.on('nominatePlayer', (data) => {
+    
+        currentPlayer = data.player;
+        currentBidder = data.name;
         currentBid = 1; // Starting bid of 1
-        currentBidder = socket.id; // The nominator is the first bidder
 
-        const nominator = participants.find(p => p.name === socket.id);
 
         io.emit('playerNominated', {
             player: currentPlayer,
             currentBid: currentBid,
-            bidder: nominator ? nominator.name : 'Unknown'
+            bidder: currentBidder
         });
         // Start the auction timer after nomination
         startAuctionTimer();
