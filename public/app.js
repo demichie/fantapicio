@@ -1,3 +1,5 @@
+// app.js
+
 const socket = io();
 let userName = null;
 
@@ -12,7 +14,9 @@ const timerEl = document.getElementById('timer');
 const blockTimerButton = document.getElementById('block-timer-button');
 const bidSection = document.getElementById('bid-section');
 const bidInput = document.getElementById('bid-input');
+const placeBidButton = document.getElementById('place-bid-button');
 
+// Event listener for joining the auction
 document.getElementById('join-button').addEventListener('click', () => {
     const nameInput = document.getElementById('name-input').value;
     if (nameInput) {
@@ -22,6 +26,7 @@ document.getElementById('join-button').addEventListener('click', () => {
     }
 });
 
+// Update the participant list
 socket.on('participantsUpdate', (participants) => {
     participantsList.innerHTML = '';
     participants.forEach((participant) => {
@@ -31,10 +36,12 @@ socket.on('participantsUpdate', (participants) => {
     });
 });
 
+// Notify when the game is ready
 socket.on('gameReady', () => {
     auctionSection.style.display = 'block';
 });
 
+// Handle player nomination
 document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
     if (playerName) {
@@ -43,52 +50,62 @@ document.getElementById('nominate-button').addEventListener('click', () => {
     }
 });
 
+// Update the current player and hide bid section
 socket.on('playerNominated', (data) => {
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
     currentBidderEl.textContent = 'None';
     document.getElementById('current-auction').style.display = 'block';
-    bidSection.style.display = 'none';
+    bidSection.style.display = 'none'; // Hide bid section until a bid is allowed
 });
 
+// Block the timer when the button is clicked
 blockTimerButton.addEventListener('click', () => {
     socket.emit('blockTimer', userName);
 });
 
-socket.on('allowBid', (data) => {
-    if (data.bidder === userName) {
-        bidSection.style.display = 'block';
-    }
+// Allow the user to place a bid if they are the one who blocked the timer
+socket.on('allowBid', () => {
+    bidSection.style.display = 'block';
+    bidInput.value = ''; // Clear any previous bid
 });
 
-document.getElementById('place-bid-button').addEventListener('click', () => {
+// Place a bid and show an alert with bid details
+placeBidButton.addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
-    if (!isNaN(bidAmount)) {
-        // alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
+    if (!isNaN(bidAmount) && bidAmount > 0) {
+        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
         socket.emit('placeBid', { name: userName, amount: bidAmount });
+
+        // Hide bid section and clear input after bid is placed
         bidInput.value = '';
         bidSection.style.display = 'none';
     }
 });
 
+// Update the current bid and bidder information
 socket.on('bidPlaced', (data) => {
-    console.log('Bid placed:', data); // Log bid placed event
     currentBidEl.textContent = data.amount;
     currentBidderEl.textContent = data.bidder;
-    blockTimerButton.style.display = 'block'; 
+    blockTimerButton.style.display = 'block'; // Show block timer button for the next round
 });
 
+// Update the timer display
 socket.on('timerUpdate', (timeLeft) => {
-    timerEl.textContent = timeLeft; // Update the displayed time
+    timerEl.textContent = timeLeft;
 });
 
+// Notify when the auction ends
 socket.on('auctionEnd', (data) => {
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
     document.getElementById('current-auction').style.display = 'none';
     timerEl.textContent = '10'; // Reset timer display
 });
 
+// Handle bid errors and display alerts
 socket.on('bidError', (message) => {
-    alert(message); // Display bid error message
+    alert(message);
+    bidSection.style.display = 'block'; // Show bid section if there was an error
 });
+
 
