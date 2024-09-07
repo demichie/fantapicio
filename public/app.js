@@ -56,7 +56,7 @@ socket.on('playerNominated', (data) => {
     currentBidderEl.textContent = data.bidder;
     document.getElementById('nomination-section').style.display = 'none';
     document.getElementById('current-auction').style.display = 'block';
-    document.getElementById('block-timer-button').style.display = 'block';
+    document.getElementById('block-section').style.display = 'block';
     document.getElementById('bid-section').style.display = 'none';
 });
 
@@ -93,7 +93,7 @@ socket.on('bidPlaced', (data) => {
     currentBidderEl.textContent = data.bidder;
     document.getElementById('nomination-section').style.display = 'none';
     document.getElementById('current-auction').style.display = 'none';
-    document.getElementById('block-timer-button').style.display = 'block';
+    document.getElementById('block-section').style.display = 'block';
     document.getElementById('bid-section').style.display = 'none';
 });
 
@@ -107,7 +107,7 @@ socket.on('auctionEnd', (data) => {
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
     document.getElementById('nomination-section').style.display = 'block';
     document.getElementById('current-auction').style.display = 'none';
-    document.getElementById('block-timer-button').style.display = 'none';
+    document.getElementById('block-section').style.display = 'none';
     document.getElementById('bid-section').style.display = 'none';
     timerEl.textContent = '10'; // Reset timer display
 });
