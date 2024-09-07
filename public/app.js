@@ -1,5 +1,3 @@
-// app.js
-
 const socket = io();
 let userName = null;
 
@@ -54,9 +52,9 @@ document.getElementById('nominate-button').addEventListener('click', () => {
 socket.on('playerNominated', (data) => {
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
-    currentBidderEl.textContent = 'None';
+    currentBidderEl.textContent = data.bidder;
     document.getElementById('current-auction').style.display = 'block';
-    bidSection.style.display = 'none'; // Hide bid section until a bid is allowed
+    bidSection.style.display = 'none'; // Hide bid section until someone blocks the timer
 });
 
 // Block the timer when the button is clicked
@@ -66,24 +64,23 @@ blockTimerButton.addEventListener('click', () => {
 
 // Allow the user to place a bid if they are the one who blocked the timer
 socket.on('allowBid', () => {
-    bidInput.value = '';
     bidSection.style.display = 'block';
-});
-
-// Allow the user to place a bid if they are the one who blocked the timer
-socket.on('completeBid', () => {
-    bidInput.value = '';
-    bidSection.style.display = 'none';
+    bidInput.value = ''; // Clear any previous bid
 });
 
 // Place a bid and show an alert with bid details
 placeBidButton.addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
     if (!isNaN(bidAmount) && bidAmount > 0) {
-        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
+        // Hide bid section before placing bid
+        bidSection.style.display = 'none'; 
+        bidInput.value = ''; // Clear the input field
 
-        // Hide bid section after placing bid
-        socket.emit('placeBid', { name: userName, amount: bidAmount }); 
+        // Emit the placeBid event with the user's name and bid amount
+        socket.emit('placeBid', { name: userName, amount: bidAmount });
+        
+        // Optionally, show an alert with the bid details
+        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
     }
 });
 

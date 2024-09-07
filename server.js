@@ -1,112 +1,109 @@
-// Ensure the correct modules are imported
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-app.use(express.static('public')); // Serve static frontend files from public folder
+let participants = [];
+let currentPlayer = null;
+let currentBid = 1;
+let currentBidder = null;
+let auctionTimeout = null;
 
-let participants = []; // Track participants {name, budget}
-let currentPlayer = null; // The player being auctioned
-let currentBidder = null; // Track who is allowed to bid
-let currentBid = 1; // Initial bid amount
-let timer = null; // Auction timer
-let auctionInProgress = false; // Track if an auction is ongoing
+app.use(express.static('public'));
 
-const DEFAULT_BUDGET = 500;
-
-// Handle new socket connections
 io.on('connection', (socket) => {
-    console.log('New connection', socket.id);
-
     // Handle participant registration
     socket.on('registerParticipant', (name) => {
-        if (participants.length < 2 && !participants.find(p => p.name === name)) {
-            participants.push({ name, budget: DEFAULT_BUDGET });
-            io.emit('participantsUpdate', participants);
-
-            if (participants.length === 2) {
-                io.emit('gameReady', participants);
-            }
+        participants.push({ name: name, budget: 500, remainingPlayers: 25 });
+        io.emit('participantsUpdate', participants);
+        
+        if (participants.length > 1) {
+            io.emit('gameReady'); // Start the game when there are at least 2 participants
         }
     });
 
     // Handle player nomination
-    socket.on('nominatePlayer', (playerName) => {
-        if (!auctionInProgress) {
-            currentPlayer = playerName;
-            currentBid = 1; // Starting bid
-            currentBidder = null; // No one has bid yet
-            auctionInProgress = true;
-            io.emit('playerNominated', { player: currentPlayer, currentBid });
+    socket.on('nominatePlayer', (player) => {
+        currentPlayer = player;
+        currentBid = 1; // Starting bid of 1
+        currentBidder = socket.id; // The nominator is the first bidder
+
+        const nominator = participants.find(p => p.name === socket.id);
+
+        io.emit('playerNominated', {
+            player: currentPlayer,
+            currentBid: currentBid,
+            bidder: nominator ? nominator.name : 'Unknown'
+        });
+
+        // Allow bidding after nomination
+        io.emit('allowBid');
+
+        // Start the auction timer after nomination
+        startAuctionTimer();
+    });
+
+    // Handle placing bids
+    socket.on('placeBid', (data) => {
+        if (data.amount > currentBid) {
+            currentBid = data.amount;
+            currentBidder = data.name;
+
+            io.emit('bidPlaced', {
+                amount: currentBid,
+                bidder: currentBidder
+            });
+
+            // Restart the timer after a new bid is placed
             startAuctionTimer();
-        }
-    });
-
-    // Handle bid blocking (timer stopping)
-    socket.on('blockTimer', (name) => {
-        if (auctionInProgress && !currentBidder) {
-            stopAuctionTimer();
-            currentBidder = name;
-            io.emit('allowBid', { bidder: currentBidder, currentBid });
-        }
-    });
-
-    // Debugging bid placement
-    socket.on('placeBid', (bidData) => {
-        console.log('Received bid:', bidData); // Log the received bid data
-        const participant = participants.find(p => p.name === bidData.name);
-        console.log('Participant:', participant); // Log participant details
-        if (auctionInProgress && bidData.amount > currentBid && bidData.amount <= participant.budget) {
-            currentBid = bidData.amount;
-            currentBidder = bidData.name;
-            console.log('Updated currentBid:', currentBid); // Log updated bid
-            io.emit('bidPlaced', { bidder: currentBidder, amount: currentBid });
-            startAuctionTimer(); // Restart the timer after a new bid
-            io.emit('completeBid', { bidder: currentBidder, currentBid });
         } else {
-            socket.emit('bidError', 'Invalid bid amount or budget.');
+            socket.emit('bidError', 'Your bid must be higher than the current bid.');
         }
     });
 
-    // Handle auction timer
+    // Timer functionality
     function startAuctionTimer() {
+        if (auctionTimeout) clearTimeout(auctionTimeout);
         let timeLeft = 10;
-        io.emit('timerUpdate', timeLeft); // Send the initial 10 seconds to clients
 
-        timer = setInterval(() => {
-            timeLeft--;
-            io.emit('timerUpdate', timeLeft); // Emit the remaining time every second
-
+        const interval = setInterval(() => {
+            io.emit('timerUpdate', timeLeft);
             if (timeLeft <= 0) {
-                clearInterval(timer); // Stop the timer once it hits 0
-                endAuction();
+                clearInterval(interval);
+                auctionEnd();
             }
+            timeLeft--;
         }, 1000);
+
+        auctionTimeout = interval;
     }
 
-    function stopAuctionTimer() {
-        clearInterval(timer);
-    }
-
-    function endAuction() {
-        if (currentBidder) {
-            const winner = participants.find(p => p.name === currentBidder);
-            winner.budget -= currentBid; // Subtract the bid amount from the winner's budget
-            io.emit('auctionEnd', { player: currentPlayer, winner: currentBidder, bid: currentBid });
-            io.emit('participantsUpdate', participants);
+    // Handle auction end
+    function auctionEnd() {
+        const winner = participants.find(p => p.name === currentBidder);
+        if (winner) {
+            winner.budget -= currentBid;
+            winner.remainingPlayers -= 1;
         }
 
-        // Reset auction state
+        io.emit('auctionEnd', {
+            winner: currentBidder,
+            player: currentPlayer,
+            bid: currentBid
+        });
+
+        // Reset the auction for the next player nomination
         currentPlayer = null;
-        currentBidder = null;
         currentBid = 1;
-        auctionInProgress = false;
+        currentBidder = null;
+
+        io.emit('participantsUpdate', participants);
     }
 });
 
-server.listen(3000, () => console.log('Server listening on port 3000'));
+server.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
 
