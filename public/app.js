@@ -63,7 +63,7 @@ socket.on('allowBid', (data) => {
 
 document.getElementById('place-bid-button').addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
-    alert(`offerta: ${bidAmount}`);
+    alert(`offerta: ${bidAmount} ${data.currentBid}`);
     console.log('Placing bid:', bidAmount); // Log bid amount
     if (bidAmount > currentBid && !isNaN(bidAmount)) {
         socket.emit('placeBid', { name: userName, amount: bidAmount });
