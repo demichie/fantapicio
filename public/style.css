@@ -1,0 +1,23 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#participants-section {
+  margin-top: 20px;
+}
+
+#participants-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#participants-list li {
+  padding: 5px;
+  font-size: 18px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+

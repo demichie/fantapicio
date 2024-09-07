@@ -4,126 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Asta Fantacalcio</title>
-  <style>
-    /* Stile di base per dispositivi mobili */
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-    }
-    #timer {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
-    #offer {
-      font-size: 1.5em;
-      margin-bottom: 20px;
-    }
-    #newBidInput {
-      font-size: 1em;
-      padding: 10px;
-      width: 100px;
-    }
-    #submitBid {
-      font-size: 1em;
-      padding: 10px;
-    }
-    #budget {
-      font-size: 1.2em;
-      margin-top: 20px;
-    }
-    #errorMessage {
-      color: red;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Asta Fantacalcio</h1>
+  <h1>Fantacalcio Asta</h1>
 
-  <div>
-    <input type="text" id="nameInput" placeholder="Inserisci il tuo nome">
-    <button id="registerButton">Registrati</button>
+  <!-- Section to display current auction status -->
+  <div id="auction-section">
+    <h2>Current Offer: <span id="current-offer">0</span> by <span id="current-bidder">None</span></h2>
+    <button id="bid-button">Place Bid</button>
   </div>
 
-  <div id="auctionSection" style="display:none;">
-    <div id="timer">10</div>
-    <div id="currentPlayer">Nessun giocatore in asta</div>
-    <div id="offer">Offerta attuale: €<span id="currentOffer">1</span> da <span id="currentBidder">Nessuno</span></div>
-
-    <input type="number" id="newBidInput" placeholder="Nuova offerta" min="1">
-    <button id="submitBid">Fai un'offerta</button>
-
-    <div id="budget"></div>
-    <div id="errorMessage"></div>
+  <!-- Section to display participants and their budget -->
+  <div id="participants-section">
+    <h2>Participants</h2>
+    <ul id="participants-list"></ul>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
-
-    const timerElem = document.getElementById('timer');
-    const offerElem = document.getElementById('currentOffer');
-    const bidderElem = document.getElementById('currentBidder');
-    const newBidInput = document.getElementById('newBidInput');
-    const submitBidBtn = document.getElementById('submitBid');
-    const registerButton = document.getElementById('registerButton');
-    const nameInput = document.getElementById('nameInput');
-    const auctionSection = document.getElementById('auctionSection');
-    const budgetElem = document.getElementById('budget');
-    const errorMessageElem = document.getElementById('errorMessage');
-
-    let userName = null;
-
-    // Registrazione del partecipante
-    registerButton.addEventListener('click', () => {
-      userName = nameInput.value;
-      socket.emit('register_participant', userName);
-      auctionSection.style.display = 'block';
-    });
-
-    // Aggiorna il timer
-    socket.on('timer', (time) => {
-      timerElem.textContent = time;
-    });
-
-    // Aggiorna l'offerta attuale
-    socket.on('new_offer', (data) => {
-      offerElem.textContent = data.offer;
-      bidderElem.textContent = data.bidder;
-      errorMessageElem.textContent = '';
-    });
-
-    // Mostra l'aggiornamento del budget
-    socket.on('budget_update', (data) => {
-      budgetElem.textContent = `Il tuo budget è: €${data.budget}. Giocatori da comprare: ${data.playersLeft}`;
-    });
-
-    // Gestisce il vincitore
-    socket.on('auction_winner', (data) => {
-      alert(`Asta terminata! ${data.winner} ha vinto l'asta per ${data.player} per €${data.price}`);
-    });
-
-    // Resetta l'asta
-    socket.on('auction_reset', () => {
-      offerElem.textContent = '1';
-      bidderElem.textContent = 'Nessuno';
-      currentPlayer.textContent = 'Nessun giocatore in asta';
-      newBidInput.value = '';
-    });
-
-    // Rilancia
-    submitBidBtn.addEventListener('click', () => {
-      const newOffer = parseInt(newBidInput.value);
-      socket.emit('new_bid', { offer: newOffer, bidder: userName });
-      newBidInput.value = '';
-    });
-
-    // Mostra errori
-    socket.on('bid_rejected', (message) => {
-      errorMessageElem.textContent = message;
-    });
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
 
