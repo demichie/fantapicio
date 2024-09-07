@@ -57,6 +57,7 @@ io.on('connection', (socket) => {
 
     // Handle new bids
     socket.on('placeBid', (bidData) => {
+        io.emit('ciao');
         const participant = participants.find(p => p.name === bidData.name);
         if (auctionInProgress && bidData.amount > currentBid && bidData.amount <= participant.budget) {
             currentBid = bidData.amount;
