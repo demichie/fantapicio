@@ -57,14 +57,13 @@ io.on('connection', (socket) => {
 
     // Handle new bids
     socket.on('placeBid', (bidData) => {
-        io.emit('ciao');
         const participant = participants.find(p => p.name === bidData.name);
         if (auctionInProgress && bidData.amount > currentBid && bidData.amount <= participant.budget) {
             currentBid = bidData.amount;
             currentBidder = bidData.name;
             io.emit('bidPlaced', { bidder: currentBidder, amount: currentBid });
             startAuctionTimer(); // Restart the timer after a new bid
-            io.emit('allowBid', { bidder: currentBidder, currentBid });
+            // io.emit('allowBid', { bidder: currentBidder, currentBid });
         } else {
             socket.emit('bidError', 'Invalid bid amount or budget.');
         }
