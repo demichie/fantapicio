@@ -10,6 +10,8 @@ let currentPlayer = null;
 let currentBid = 1;
 let currentBidder = null;
 let auctionTimeout = null;
+let timer = null; // Auction timer
+
 // let auctionInProgress = false; // Track if an auction is ongoing
 
 app.use(express.static('public'));
