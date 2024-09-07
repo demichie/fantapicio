@@ -17,6 +17,7 @@ const placeBidButton = document.getElementById('place-bid-button');
 
 // Event listener for joining the auction
 document.getElementById('join-button').addEventListener('click', () => {
+    alert('ciao');
     const nameInput = document.getElementById('name-input').value;
     alert(`nameInpute ${nameInput}`);
     if (nameInput) {
