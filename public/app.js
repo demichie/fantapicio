@@ -81,11 +81,12 @@ placeBidButton.addEventListener('click', () => {
         bidSection.style.display = 'none'; 
         bidInput.value = ''; // Clear the input field
 
+        // Optionally, show an alert with the bid details
+        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
+
         // Emit the placeBid event with the user's name and bid amount
         socket.emit('placeBid', { name: userName, amount: bidAmount });
         
-        // Optionally, show an alert with the bid details
-        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
     }
 });
 
