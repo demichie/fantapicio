@@ -63,6 +63,7 @@ socket.on('allowBid', (data) => {
 
 document.getElementById('place-bid-button').addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
+    console.log('Placing bid:', bidAmount); // Log bid amount
     if (bidAmount > currentBid && !isNaN(bidAmount)) {
         socket.emit('placeBid', { name: userName, amount: bidAmount });
         bidInput.value = '';
@@ -71,9 +72,9 @@ document.getElementById('place-bid-button').addEventListener('click', () => {
 });
 
 socket.on('bidPlaced', (data) => {
+    console.log('Bid placed:', data); // Log bid placed event
     currentBidEl.textContent = data.amount;
     currentBidderEl.textContent = data.bidder;
-    // Allow timer blocking again
     blockTimerButton.style.display = 'block'; 
 });
 

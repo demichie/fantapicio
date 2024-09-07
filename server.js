@@ -55,15 +55,18 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Handle new bids
+    // Debugging bid placement
     socket.on('placeBid', (bidData) => {
+        console.log('Received bid:', bidData); // Log the received bid data
         const participant = participants.find(p => p.name === bidData.name);
+        console.log('Participant:', participant); // Log participant details
         if (auctionInProgress && bidData.amount > currentBid && bidData.amount <= participant.budget) {
             currentBid = bidData.amount;
             currentBidder = bidData.name;
+            console.log('Updated currentBid:', currentBid); // Log updated bid
             io.emit('bidPlaced', { bidder: currentBidder, amount: currentBid });
             startAuctionTimer(); // Restart the timer after a new bid
-            // io.emit('allowBid', { bidder: currentBidder, currentBid });
+            io.emit('allowBid', { bidder: currentBidder, currentBid });
         } else {
             socket.emit('bidError', 'Invalid bid amount or budget.');
         }
