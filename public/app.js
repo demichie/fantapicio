@@ -20,8 +20,8 @@ document.getElementById('join-button').addEventListener('click', () => {
     const nameInput = document.getElementById('name-input').value;
     if (nameInput) {
         userName = nameInput;
-        nameInputSection.style.display = 'none';
         socket.emit('registerParticipant', userName);
+        nameInputSection.style.display = 'none';
     }
 });
 
@@ -52,6 +52,7 @@ document.getElementById('nominate-button').addEventListener('click', () => {
 // Update the current player and hide bid section until allowed
 socket.on('playerNominated', (data) => {
     playerInput.value = ''; // Clear the input field
+    alert(`${data.bidder} start the auction for ${data.player} with a bid of ${data.currentBid}!`);
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
     currentBidderEl.textContent = data.bidder;

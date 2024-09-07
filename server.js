@@ -27,8 +27,7 @@ io.on('connection', (socket) => {
     });
 
     // Handle player nomination
-    socket.on('nominatePlayer', (data) => {
-    
+    socket.on('nominatePlayer', (data) => {    
         currentPlayer = data.player;
         currentBidder = data.name;
         currentBid = 1; // Starting bid of 1
