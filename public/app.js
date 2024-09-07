@@ -43,6 +43,8 @@ socket.on('gameReady', () => {
 document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
     if (playerName) {
+        playerInput.style.display = 'none'; 
+        playerInput.value = ''; // Clear the input field
         socket.emit('nominatePlayer', playerName);
         playerInput.value = '';
     }
