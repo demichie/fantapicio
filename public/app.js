@@ -62,8 +62,9 @@ socket.on('allowBid', (data) => {
 });
 
 document.getElementById('place-bid-button').addEventListener('click', () => {
+    alert(`Current bid: ${currentBid}`);
     const bidAmount = parseInt(bidInput.value);
-    alert(`${bidAmount} and ${currentBid} `);
+    alert(`Placing bid: ${bidAmount}`);
     console.log('Placing bid:', bidAmount); // Log bid amount
     if (bidAmount > currentBid) {
         alert(`offerta`);
