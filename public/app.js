@@ -50,7 +50,7 @@ document.getElementById('nominate-button').addEventListener('click', () => {
     }
 });
 
-// Update the current player and hide bid section
+// Update the current player and hide bid section until allowed
 socket.on('playerNominated', (data) => {
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
@@ -74,11 +74,13 @@ socket.on('allowBid', () => {
 placeBidButton.addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
     if (!isNaN(bidAmount) && bidAmount > 0) {
-        // Hide bid section and clear input after bid is placed
+        alert(`Placing bid: ${bidAmount}\nCurrent bid: ${currentBidEl.textContent}`);
+
+        // Hide bid section after placing bid
         bidInput.value = '';
         bidSection.style.display = 'none';
         socket.emit('placeBid', { name: userName, amount: bidAmount });
-
+ 
     }
 });
 
@@ -106,5 +108,4 @@ socket.on('bidError', (message) => {
     alert(message);
     bidSection.style.display = 'block'; // Show bid section if there was an error
 });
-
 
