@@ -37,7 +37,7 @@ socket.on('participantsUpdate', (participants) => {
 
 // Notify when the game is ready
 socket.on('gameReady', () => {
-    auctionSection.style.display = 'block';
+    document.getElementById('auction-section').style.display = 'block';
 });
 
 // Handle player nomination
