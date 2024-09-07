@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
     // Handle new bids
     socket.on('placeBid', (bidData) => {
         const participant = participants.find(p => p.name === bidData.name);
-        if (bidData.amount > currentBid && bidData.amount <= participant.budget) {
+        if (auctionInProgress && bidData.amount > currentBid && bidData.amount <= participant.budget) {
             currentBid = bidData.amount;
             currentBidder = bidData.name;
             io.emit('bidPlaced', { bidder: currentBidder, amount: currentBid });
@@ -70,36 +70,5 @@ io.on('connection', (socket) => {
         let timeLeft = 10;
         io.emit('timerUpdate', timeLeft); // Send the initial 10 seconds to clients
 
-        timer = setInterval(() => {
-            timeLeft--;
-            io.emit('timerUpdate', timeLeft); // Emit the remaining time every second
-
-            if (timeLeft <= 0) {
-                clearInterval(timer); // Stop the timer once it hits 0
-                endAuction();
-            }
-        }, 1000);
-    }
-
-    function stopAuctionTimer() {
-        clearInterval(timer);
-    }
-
-    function endAuction() {
-        if (currentBidder) {
-            const winner = participants.find(p => p.name === currentBidder);
-            winner.budget -= currentBid; // Subtract the bid amount from the winner's budget
-            io.emit('auctionEnd', { player: currentPlayer, winner: currentBidder, bid: currentBid });
-            io.emit('participantsUpdate', participants);
-        }
-
-        // Reset auction state
-        currentPlayer = null;
-        currentBidder = null;
-        currentBid = 1;
-        auctionInProgress = false;
-    }
-});
-
-server.listen(3000, () => console.log('Server listening on port 3000'));
+        timer = setI
 

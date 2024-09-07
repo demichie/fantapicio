@@ -63,16 +63,17 @@ socket.on('allowBid', (data) => {
 
 document.getElementById('place-bid-button').addEventListener('click', () => {
     const bidAmount = parseInt(bidInput.value);
-    if (bidAmount > currentBid) {
+    if (bidAmount > currentBid && !isNaN(bidAmount)) {
         socket.emit('placeBid', { name: userName, amount: bidAmount });
+        bidInput.value = '';
+        bidSection.style.display = 'none';
     }
-    bidInput.value = '';
-    bidSection.style.display = 'none';
 });
 
 socket.on('bidPlaced', (data) => {
     currentBidEl.textContent = data.amount;
     currentBidderEl.textContent = data.bidder;
+    blockTimerButton.style.display = 'block'; // Allow timer blocking again
 });
 
 socket.on('timerUpdate', (timeLeft) => {
@@ -84,5 +85,4 @@ socket.on('auctionEnd', (data) => {
     document.getElementById('current-auction').style.display = 'none';
     timerEl.textContent = '10'; // Reset timer display
 });
-
 
