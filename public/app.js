@@ -87,3 +87,7 @@ socket.on('auctionEnd', (data) => {
     timerEl.textContent = '10'; // Reset timer display
 });
 
+socket.on('bidError', (message) => {
+    alert(message); // Display bid error message
+});
+

@@ -1,3 +1,4 @@
+// Ensure the correct modules are imported
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -63,6 +64,8 @@ io.on('connection', (socket) => {
             io.emit('bidPlaced', { bidder: currentBidder, amount: currentBid });
             startAuctionTimer(); // Restart the timer after a new bid
             io.emit('allowBid', { bidder: currentBidder, currentBid });
+        } else {
+            socket.emit('bidError', 'Invalid bid amount or budget.');
         }
     });
 
