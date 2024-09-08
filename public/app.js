@@ -72,7 +72,8 @@ blockTimerButton.addEventListener('click', () => {
 // Update the button text and timer
 socket.on('blockTimer', (bidderName) => {
     document.getElementById('bidder-section').style.display = 'block';
-    bidder-button.textContent = `${bidderName} is bidding`;
+    bidderButton.textContent = `${bidderName} is bidding`;
+    blockTimerButton.classList.add('red');
 });
 
 // Place a bid
