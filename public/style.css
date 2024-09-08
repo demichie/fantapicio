@@ -33,8 +33,10 @@ input, button {
 
 /* Header Image */
 .header-image img {
-  max-width: 100%;
-  height: auto;
+  width: 100%; /* Full width on all screens */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 20vh; /* Maximum height: 20% of the viewport height */
+  object-fit: cover; /* Ensure the image covers the container */
   margin-bottom: 20px;
 }
 
@@ -77,6 +79,11 @@ input, button {
 
   input[type="text"], input[type="number"] {
     font-size: 1.2rem;
+  }
+
+  /* Adjust image height on smaller screens */
+  .header-image img {
+    max-height: 25vh; /* Slightly increase height for smaller screens */
   }
 }
 
