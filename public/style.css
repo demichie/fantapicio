@@ -20,7 +20,7 @@ header img {
 
 /* Content Area Styling */
 #content-area {
-    background-image: url('images/fantapicio.jpg'); /* Background image */
+    background-image: url('images/background.jpg'); /* Background image */
     background-size: cover; /* Cover the entire content area */
     background-position: center; /* Center the background image */
     background-repeat: no-repeat; /* No repeat of the background image */
