@@ -135,7 +135,29 @@ button:disabled {
 
 #name-input-section {
   background-color: rgba(222,237,255,.75);
+  padding: 20px;
 }
+
+#auction-section {
+  background-color: rgba(222,237,255,.75);
+  padding: 20px;
+}
+
+#nomination-section {
+  background-color: rgba(222,237,255,.75);
+  padding: 20px;
+}
+
+#block-section {
+  background-color: rgba(222,237,255,.75);
+  padding: 20px;
+}
+
+#bid-section {
+  background-color: rgba(222,237,255,.75);
+  padding: 20px;
+}
+
 
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {
