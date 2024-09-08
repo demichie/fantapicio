@@ -30,7 +30,7 @@ socket.on('participantsUpdate', (participants) => {
     participantsList.innerHTML = '';
     participants.forEach((participant) => {
         const li = document.createElement('li');
-        li.textContent = `${participant.name} - Budget: ${participant.budget}`;
+        li.textContent = `${participant.name} - Budget: ${participant.budget} - RemainingPlayers: ${participant.remainingPlayers}`;
         participantsList.appendChild(li);
     });
 });
