@@ -1,6 +1,7 @@
 const socket = io();
 let userName = null;
 let participants = []; // To store participants on the client-side
+let currentBidder = [];
 
 const nameInputSection = document.getElementById('name-input-section');
 const auctionSection = document.getElementById('auction-section');
@@ -55,6 +56,7 @@ document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
     if (playerName) {
         socket.emit('nominatePlayer', { name: userName, player: playerName });
+        currentBidder = userName;
     }
 });
 
@@ -123,6 +125,7 @@ socket.on('bidPlaced', (data) => {
     document.getElementById('block-section').style.display = 'block';
     document.getElementById('bid-section').style.display = 'none';
     document.getElementById('bidder-section').style.display = 'none';
+    currentBidder = data.bidder;
 });
 
 // Update the timer display
