@@ -74,7 +74,6 @@ io.on('connection', (socket) => {
     }
 
     function stopAuctionTimer() {
-        io.emit('timerUpdate', timeLeft);    
         clearInterval(auctionTimeout);
     }
 
