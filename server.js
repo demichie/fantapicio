@@ -15,12 +15,14 @@ app.use(express.static('public'));
 
 io.on('connection', (socket) => {
     // Handle participant registration
-    socket.on('registerParticipant', (name) => {
-        participants.push({ name: name, budget: 500, remainingPlayers: 25 });
+    socket.on('registerParticipant', (data) => {
+        const { name, budget, remainingPlayers } = data;
+
+        participants.push({ name: name, budget: budget, remainingPlayers: remainingPlayers });
         io.emit('participantsUpdate', participants);
         
         if (participants.length > 1) {
-            io.emit('gameReady');
+            io.emit('gameReady'); // Start the game when there are at least 2 participants
         }
     });
 

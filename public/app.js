@@ -24,9 +24,14 @@ const timerAudio = document.getElementById('timer-audio');
 // Event listener for joining the auction
 document.getElementById('join-button').addEventListener('click', () => {
     const nameInput = document.getElementById('name-input').value;
-    if (nameInput) {
+    const budgetInput = document.getElementById('budget-input').value;
+    const playersInput = document.getElementById('players-input').value;
+
+    if (nameInput && budgetInput && playersInput) {
         userName = nameInput;
-        socket.emit('registerParticipant', userName);
+        initialBudget = parseInt(budgetInput);
+        remainingPlayers = parseInt(playersInput);
+        socket.emit('registerParticipant', { name: userName, budget: initialBudget, remainingPlayers: remainingPlayers });
         nameInputSection.style.display = 'none';
     }
 });
