@@ -14,10 +14,15 @@ let auctionTimeout = null;
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
+
     // Handle participant registration
     socket.on('registerParticipant', (data) => {
         const { name, budget, remainingPlayers } = data;
 
+        // Remove any existing participant with the same name
+        participants = participants.filter(participant => participant.name !== name);
+
+        // Add the new participant
         participants.push({ name: name, budget: budget, remainingPlayers: remainingPlayers });
         io.emit('participantsUpdate', participants);
         
