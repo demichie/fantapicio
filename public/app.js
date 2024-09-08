@@ -36,6 +36,7 @@ socket.on('participantsUpdate', (participants) => {
 socket.on('gameReady', () => {
     document.getElementById('name-input-section').style.display = 'none';
     document.getElementById('auction-section').style.display = 'block';
+    nominationSection.style.display = 'block';
 });
 
 document.getElementById('nominate-button').addEventListener('click', () => {
