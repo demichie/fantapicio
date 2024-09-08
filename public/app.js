@@ -78,7 +78,6 @@ socket.on('playerNominated', (data) => {
 blockTimerButton.addEventListener('click', () => {
     socket.emit('getParticipants');
     const bidder = participants.find(p => p.name === userName);
-    alert(bidder.budget >= bidder.remainingPlayers );
     if ( bidder.budget >= bidder.remainingPlayers ) {
         document.getElementById('bid-section').style.display = 'block';
         socket.emit('blockTimer', userName);
@@ -92,7 +91,6 @@ socket.on('blockTimer', (bidderName) => {
     document.getElementById('bidder-section').style.display = 'block';
     // bidder-button.textContent = `ciccio is bidding`;
     document.getElementById('bidder-button').innerText = bidderName + ' is bidding';
-    blockTimerButton.classList.add('red');
     timerEl.textContent = 10;
     timerEl.classList.add('size1');
     // Stop the timer audio when the timer is blocked
@@ -152,7 +150,6 @@ socket.on('auctionEnd', (data) => {
     document.getElementById('block-section').style.display = 'none';
     document.getElementById('bid-section').style.display = 'none';
     blockTimerButton.textContent = 'Block Timer and Bid';
-    blockTimerButton.classList.remove('red');
     // Stop the timer audio when the auction ends
     timerAudio.pause();
     timerAudio.currentTime = 0;    
