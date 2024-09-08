@@ -40,17 +40,22 @@ header img {
 
 #participants-table th, #participants-table td {
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #707070;
 }
 
 #participants-table th {
-    background-color: #f4f4f4;
+    background-color: #cededd;
     font-weight: bold;
 }
 
 #participants-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #cededd;
 }
+
+#participants-table tr:nth-child(odd) {
+    background-color: #decece;
+}
+
 
 /* Centering Content */
 #name-input-section, 
