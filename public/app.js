@@ -72,7 +72,7 @@ blockTimerButton.addEventListener('click', () => {
 socket.on('blockTimer', (bidderName) => {
     document.getElementById('block-section').style.display = 'none';
     document.getElementById('bidder-section').style.display = 'block';
-    bidder-button.textContent = `${bidderName} is bidding`;
+    bidder-button.textContent = `ciccio is bidding`;
     blockTimerButton.classList.add('red');
 });
 
