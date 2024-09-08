@@ -133,6 +133,11 @@ button:disabled {
     font-size: 72px; /* Largest size when timer ends */
 }
 
+#name-input-section {
+  background: #FF7A59;
+  opacity: 0.3;
+}
+
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {
     h2, h3, p {
