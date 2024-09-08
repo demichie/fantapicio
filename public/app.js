@@ -15,6 +15,9 @@ const bidSection = document.getElementById('bid-section');
 const bidInput = document.getElementById('bid-input');
 const placeBidButton = document.getElementById('place-bid-button');
 
+// Audio element
+const timerAudio = document.getElementById('timer-audio');
+
 // Event listener for joining the auction
 document.getElementById('join-button').addEventListener('click', () => {
     const nameInput = document.getElementById('name-input').value;
