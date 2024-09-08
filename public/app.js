@@ -64,15 +64,15 @@ socket.on('playerNominated', (data) => {
 // Block the timer when the button is clicked
 blockTimerButton.addEventListener('click', () => {
     document.getElementById('bid-section').style.display = 'block';
-    document.getElementById('block-section').style.display = 'none';
     socket.emit('blockTimer', userName);
     document.getElementById('bidder-section').style.display = 'none';
 });
 
 // Update the button text and timer
 socket.on('blockTimer', (bidderName) => {
+    document.getElementById('block-section').style.display = 'none';
     document.getElementById('bidder-section').style.display = 'block';
-    bidderButton.textContent = `${bidderName} is bidding`;
+    bidder-button.textContent = `${bidderName} is bidding`;
     blockTimerButton.classList.add('red');
 });
 
