@@ -48,6 +48,7 @@ io.on('connection', (socket) => {
             socket.emit('bidError', 'Your bid must be smaller.');
         } else {
             currentBidder = data.name;
+            currentBid = data.amount;
 
             io.emit('bidPlaced', {
                 amount: currentBid,
@@ -62,7 +63,8 @@ io.on('connection', (socket) => {
     function startAuctionTimer() {
         if (auctionTimeout) clearTimeout(auctionTimeout);
         let timeLeft = 10;
-
+        io.emit('timerUpdate', timeLeft);
+            
         const interval = setInterval(() => {
             timeLeft--;
             io.emit('timerUpdate', timeLeft);
