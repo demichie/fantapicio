@@ -143,6 +143,8 @@ socket.on('bidPlaced', (data) => {
     document.getElementById('block-section').style.display = 'block';
     document.getElementById('bid-section').style.display = 'none';
     document.getElementById('bidder-section').style.display = 'none';
+    timerAudio.currentTime = 0; // Reset audio playback position
+    timerAudio.play();    
     currentBidder = data.bidder;
 });
 
