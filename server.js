@@ -9,26 +9,28 @@ let participants = [];
 let currentPlayer = null;
 let currentBid = 1;
 let currentBidder = null;
-let auctionTimeout = null;
-let timer = null;
+let auctionInterval = null;
 
-// Serve static files from the "public" directory
 app.use(express.static('public'));
 
-// Handle socket connections
 io.on('connection', (socket) => {
     // Handle participant registration
     socket.on('registerParticipant', (name) => {
-        participants.push({ name: name, budget: 500, remainingPlayers: 25 });
-        io.emit('participantsUpdate', participants);
-        
-        if (participants.length > 1) {
-            io.emit('gameReady'); // Start the game when there are at least 2 participants
+        // Check if participant already exists
+        if (!participants.some(p => p.name === name)) {
+            participants.push({ name: name, budget: 500, remainingPlayers: 25 });
+            io.emit('participantsUpdate', participants);
+            
+            if (participants.length > 1) {
+                io.emit('gameReady'); // Start the game when there are at least 2 participants
+            }
+        } else {
+            socket.emit('participantError', 'This name is already taken.');
         }
     });
 
     // Handle player nomination
-    socket.on('nominatePlayer', (data) => {    
+    socket.on('nominatePlayer', (data) => {
         currentPlayer = data.player;
         currentBidder = data.name;
         currentBid = 1; // Starting bid of 1
@@ -38,7 +40,6 @@ io.on('connection', (socket) => {
             currentBid: currentBid,
             bidder: currentBidder
         });
-
         // Start the auction timer after nomination
         startAuctionTimer();
     });
@@ -61,15 +62,29 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Handle blocking the timer
+    socket.on('blockTimer', () => {
+        stopAuctionTimer();
+        io.emit('timerStopped'); // Notify clients that the timer has been stopped
+    });
+
+    function stopAuctionTimer() {
+        if (auctionInterval) {
+            clearInterval(auctionInterval); // Stop the timer
+            auctionInterval = null; // Reset the interval ID
+        }
+    }
+
     // Timer functionality
     function startAuctionTimer() {
-        if (auctionTimeout) clearTimeout(auctionTimeout);
+        stopAuctionTimer(); // Ensure any existing timer is cleared
         let timeLeft = 10;
 
-        timer = setInterval(() => {
+        auctionInterval = setInterval(() => {
             io.emit('timerUpdate', timeLeft);
             if (timeLeft <= 0) {
-                clearInterval(timer);
+                clearInterval(auctionInterval);
+                auctionInterval = null; // Reset the interval ID
                 auctionEnd();
             }
             timeLeft--;
@@ -97,14 +112,8 @@ io.on('connection', (socket) => {
 
         io.emit('participantsUpdate', participants);
     }
-
-    // Disconnect event handling if needed
-    socket.on('disconnect', () => {
-        // Optional: handle disconnection if necessary (e.g., remove participant)
-    });
 });
 
-// Start the server
 server.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
