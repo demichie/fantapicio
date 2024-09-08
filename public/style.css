@@ -1,54 +1,89 @@
-/* style.css */
+/* Global Styles */
 body {
   font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #f5f5f5;
+  height: 100vh;
 }
 
-h2, h3, h4 {
-  margin-bottom: 10px;
+h2, h3, h4, p {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 input, button {
-  padding: 8px;
-  margin-top: 10px;
-  display: block;
-  width: 100%;
-  max-width: 300px;
+  padding: 10px;
+  margin: 10px;
+  font-size: 1.2rem;
 }
 
-button {
-  cursor: pointer;
-  background-color: #28a745;
+/* Center the input and other sections */
+#name-input-section, #auction-section, #nomination-section, #current-auction, #block-section, #bid-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Header Image */
+.header-image img {
+  width: 100%; /* Full width on all screens */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 20vh; /* Maximum height: 20% of the viewport height */
+  object-fit: cover; /* Ensure the image covers the container */
+  margin-bottom: 20px;
+}
+
+/* Style the large button */
+.large-button {
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-button:hover {
-  background-color: #218838;
+.large-button:hover {
+  background-color: #0056b3;
 }
 
-#participants-list {
-  list-style-type: none;
-  padding: 0;
-}
+/* Responsive font sizes for smaller screens */
+@media only screen and (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
 
-#participants-list li {
-  padding: 5px 0;
-}
+  h2, h3, h4, p {
+    font-size: 1.2rem;
+  }
 
-#auction-section, #nomination-section, #current-auction, #block-section, #bid-section {
-  margin-top: 20px;
-}
+  input, button {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1.4rem;
+  }
 
-#block-timer-button, #place-bid-button {
-  display: inline-block;
-  width: auto;
-}
+  /* Adjust button size on small screens */
+  .large-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+  }
 
-#timer {
-  font-weight: bold;
+  input[type="text"], input[type="number"] {
+    font-size: 1.2rem;
+  }
+
+  /* Adjust image height on smaller screens */
+  .header-image img {
+    max-height: 25vh; /* Slightly increase height for smaller screens */
+  }
 }
 
