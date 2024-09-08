@@ -78,11 +78,11 @@ blockTimerButton.addEventListener('click', () => {
     socket.emit('getParticipants');
     const bidder = participants.find(p => p.name === userName);
 
-    //if ( bidder.budget >= bidder.remainingPlayers ) {
+    if ( bidder.budget >= bidder.remainingPlayers ) {
         document.getElementById('bid-section').style.display = 'block';
         socket.emit('blockTimer', userName);
         document.getElementById('bidder-section').style.display = 'none';
-    //}
+    }
 });
 
 // Update the button text and timer
