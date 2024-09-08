@@ -10,42 +10,46 @@
     <header>
         <img src="images/fantapicio.jpg" alt="Auction Image">
     </header>
-    <div id="name-input-section">
-        <h2>Enter your name to join the auction:</h2>
-        <input type="text" id="name-input" placeholder="Your name">
-        <button id="join-button">Join Auction</button>
-    </div>
+    
+    <!-- Content Area with Background Image -->
+    <div id="content-area">
+        
+        <div id="name-input-section">
+            <h2>Enter your name to join the auction:</h2>
+            <input type="text" id="name-input" placeholder="Your name">
+            <button id="join-button">Join Auction</button>
+        </div>
 
-    <div id="auction-section" style="display: none;">
-        <h2>Auction Participants</h2>
-        <ul id="participants-list"></ul>
-    </div>
+        <div id="auction-section" style="display: none;">
+            <h2>Auction Participants</h2>
+            <ul id="participants-list"></ul>
+        </div>
 
-    <div id="nomination-section" style="display: none;">
-        <h3>Nominate a player:</h3>
-        <input type="text" id="player-input" placeholder="Player name">
-        <button id="nominate-button">Nominate Player</button>
-    </div>
+        <div id="nomination-section" style="display: none;">
+            <h3>Nominate a player:</h3>
+            <input type="text" id="player-input" placeholder="Player name">
+            <button id="nominate-button">Nominate Player</button>
+        </div>
 
-    <div id="current-auction" style="display: none;">
-        <h3>Auctioning: <span id="current-player"></span></h3>
-        <p>Current bid: <span id="current-bid">1</span> by <span id="current-bidder">None</span></p>
-    </div>
+        <div id="current-auction" style="display: none;">
+            <h3>Auctioning: <span id="current-player"></span></h3>
+            <p>Current bid: <span id="current-bid">1</span> by <span id="current-bidder">None</span></p>
+        </div>
 
-    <div id="block-section" style="display: none;">
-        <button id="block-timer-button">Block Timer and Bid</button>
-        <h4>Time left: <span id="timer">10</span> seconds</h4>
-    </div>
+        <div id="block-section" style="display: none;">
+            <button id="block-timer-button">Block Timer and Bid</button>
+            <h4>Time left: <span id="timer">10</span> seconds</h4>
+        </div>
 
-    <div id="bidder-section" style="display: none;">
-        <button id="bidder-button">Someone is bidding</button>
-    </div>
+        <div id="bidder-section" style="display: none;">
+            <button id="bidder-button">Someone is bidding</button>
+        </div>
 
-
-    <div id="bid-section" style="display: none;">
-        <h3>Place your bid:</h3>
-        <input type="number" id="bid-input" placeholder="Enter your bid">
-        <button id="place-bid-button">Place Bid</button>
+        <div id="bid-section" style="display: none;">
+            <h3>Place your bid:</h3>
+            <input type="number" id="bid-input" placeholder="Enter your bid">
+            <button id="place-bid-button">Place Bid</button>
+        </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
