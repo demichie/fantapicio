@@ -64,12 +64,12 @@ io.on('connection', (socket) => {
         let timeLeft = 10;
 
         const interval = setInterval(() => {
+            timeLeft--;
             io.emit('timerUpdate', timeLeft);
             if (timeLeft <= 0) {
                 clearInterval(interval);
                 auctionEnd();
             }
-            timeLeft--;
         }, 1000);
 
         auctionTimeout = interval;
