@@ -89,6 +89,11 @@ placeBidButton.addEventListener('click', () => {
     }
 });
 
+socket.on('bidError', (message) => {
+    alert(message); // Display bid error message
+    bidSection.style.display = 'block';    
+});
+
 // Update the current bid and bidder information
 socket.on('bidPlaced', (data) => {
     currentBidEl.textContent = data.amount;
