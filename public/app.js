@@ -59,17 +59,19 @@ socket.on('playerNominated', (data) => {
     document.getElementById('block-section').style.display = 'block';
     document.getElementById('bid-section').style.display = 'none';
     document.getElementById('bidder-section').style.display = 'none';
+    // Start playing the timer audio when the auction begins
+    timerAudio.play();    
 });
 
 // Block the timer when the button is clicked
 blockTimerButton.addEventListener('click', () => {
     const bidder = participants.find(p => p.name === userName);
 
-    if ( bidder.budget >= bidder.remainingPlayers ) {
+    //if ( bidder.budget >= bidder.remainingPlayers ) {
         document.getElementById('bid-section').style.display = 'block';
         socket.emit('blockTimer', userName);
         document.getElementById('bidder-section').style.display = 'none';
-    }
+    //}
 });
 
 // Update the button text and timer
@@ -81,6 +83,9 @@ socket.on('blockTimer', (bidderName) => {
     blockTimerButton.classList.add('red');
     timerEl.textContent = 10;
     timerEl.classList.add('size1');
+    // Stop the timer audio when the timer is blocked
+    timerAudio.pause();
+    timerAudio.currentTime = 0; // Reset audio playback position
 });
 
 // Place a bid
@@ -135,5 +140,8 @@ socket.on('auctionEnd', (data) => {
     document.getElementById('bid-section').style.display = 'none';
     blockTimerButton.textContent = 'Block Timer and Bid';
     blockTimerButton.classList.remove('red');
+    // Stop the timer audio when the auction ends
+    timerAudio.pause();
+    timerAudio.currentTime = 0;    
 });
 
