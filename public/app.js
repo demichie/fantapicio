@@ -118,6 +118,8 @@ socket.on('auctionEnd', (data) => {
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
     nominationSection.style.display = 'block';
     document.getElementById('current-auction').style.display = 'none';
+    document.getElementById('block-section').style.display = 'none';
+    document.getElementById('bid-section').style.display = 'none';
     blockTimerButton.textContent = 'Block Timer and Bid';
     blockTimerButton.classList.remove('red');
 });

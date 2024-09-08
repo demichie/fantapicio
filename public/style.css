@@ -77,10 +77,25 @@ button:disabled {
     background-color: green; /* Green color to reset after bid is placed */
 }
 
+/* Block Timer Button Styles */
+#bidder-button {
+    background-color: red; /* Start with green */
+    color: white;
+    padding: 20px 40px;
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for color change */
+}
+
 #bidder-button.red {
     background-color: red; /* Red color when the timer is blocked */
 }
 
+#bidder-button.green {
+    background-color: green; /* Red color when the timer is blocked */
+}
 
 /* Timer Styling */
 #timer {
@@ -116,6 +131,12 @@ button:disabled {
         font-size: 20px;
         padding: 15px 30px;
     }
+
+    #bidder-button {
+        font-size: 20px;
+        padding: 15px 30px;
+    }
+
 
     input[type="text"], 
     input[type="number"] {
