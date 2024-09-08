@@ -5,7 +5,8 @@ let currentBidder = [];
 
 const nameInputSection = document.getElementById('name-input-section');
 const auctionSection = document.getElementById('auction-section');
-const participantsList = document.getElementById('participants-list');
+const participantsTableBody = document.querySelector('#participants-table tbody');
+// const participantsList = document.getElementById('participants-list');
 const playerInput = document.getElementById('player-input');
 const currentPlayerEl = document.getElementById('current-player');
 const currentBidEl = document.getElementById('current-bid');

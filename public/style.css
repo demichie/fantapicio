@@ -30,6 +30,28 @@ header img {
     box-sizing: border-box;
 }
 
+#participants-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+#participants-table th, #participants-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+#participants-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+#participants-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
 /* Centering Content */
 #name-input-section, 
 #auction-section, 
