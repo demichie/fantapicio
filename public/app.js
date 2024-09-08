@@ -30,15 +30,35 @@ document.getElementById('join-button').addEventListener('click', () => {
     }
 });
 
-// Update the participant list
-socket.on('participantsUpdate', (participants) => {
-    participantsList.innerHTML = '';
-    participants.forEach((participant) => {
-        const li = document.createElement('li');
-        li.textContent = `${participant.name} - Budget: ${participant.budget} - RemainingPlayers: ${participant.remainingPlayers}`;
-        participantsList.appendChild(li);
-    });
+// Update the participant table
+socket.on('participantsUpdate', (updatedParticipants) => {
+    participants = updatedParticipants;
+    updateParticipantsDisplay();
 });
+
+// Function to update participants table display on the page
+function updateParticipantsDisplay() {
+    participantsTableBody.innerHTML = ''; // Clear the table body
+
+    participants.forEach((participant) => {
+        const row = document.createElement('tr');
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = participant.name;
+
+        const budgetCell = document.createElement('td');
+        budgetCell.textContent = participant.budget;
+
+        const remainingPlayersCell = document.createElement('td');
+        remainingPlayersCell.textContent = participant.remainingPlayers;
+
+        row.appendChild(nameCell);
+        row.appendChild(budgetCell);
+        row.appendChild(remainingPlayersCell);
+
+        participantsTableBody.appendChild(row);
+    });
+}
 
 // Listen for participants data from the server
 socket.on('participantsData', (data) => {

@@ -26,10 +26,21 @@
             <button id="join-button">Join Auction</button>
         </div>
 
-        <div id="auction-section" style="display: none;">
-            <h2>Auction Participants</h2>
-            <ul id="participants-list"></ul>
-        </div>
+<div id="auction-section" style="display: none;">
+  <h2>Auction Participants</h2>
+  <table id="participants-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Budget</th>
+        <th>Remaining Players</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Participant rows will be dynamically added here -->
+    </tbody>
+  </table>
+</div>
 
         <div id="nomination-section" style="display: none;">
             <h3>Nominate a player:</h3>
