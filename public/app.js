@@ -73,8 +73,10 @@ socket.on('blockTimer', (bidderName) => {
     document.getElementById('block-section').style.display = 'none';
     document.getElementById('bidder-section').style.display = 'block';
     // bidder-button.textContent = `ciccio is bidding`;
-    document.getElementById('bidder-button').innerText = bidderName + 'is bidding';
+    document.getElementById('bidder-button').innerText = bidderName + ' is bidding';
     blockTimerButton.classList.add('red');
+    timerEl.textContent = 10;
+    timerEl.classList.add('size1');
 });
 
 // Place a bid
@@ -116,6 +118,7 @@ socket.on('timerUpdate', (timeLeft) => {
 
 // Notify when the auction ends
 socket.on('auctionEnd', (data) => {
+    timerEl.textContent = 0;
     alert(`${data.winner} wins the auction for ${data.player} with a bid of ${data.bid}!`);
     nominationSection.style.display = 'block';
     document.getElementById('current-auction').style.display = 'none';
