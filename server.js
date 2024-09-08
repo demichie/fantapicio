@@ -69,6 +69,7 @@ io.on('connection', (socket) => {
             timeLeft--;
             io.emit('timerUpdate', timeLeft);
             if (timeLeft <= 0) {
+                io.emit('timerUpdate', timeLeft);
                 clearInterval(interval);
                 auctionEnd();
             }
