@@ -42,7 +42,11 @@ io.on('connection', (socket) => {
     socket.on('placeBid', (data) => {
         const bidder = participants.find(p => p.name === data.name);
         
-        if (data.amount > currentBid && (data.amount+bidder.remainingPlayers-1) <= bidder.budget ) {            currentBid = data.amount;
+        if (data.amount > currentBid) {
+            socket.emit('bidError', 'Your bid must be higher than the current bid.');
+        } else if ( data.amount+bidder.remainingPlayers-1 <= bidder.budget) {
+            socket.emit('bidError', 'Your bid must be smaller.');
+        } else {
             currentBidder = data.name;
 
             io.emit('bidPlaced', {
@@ -51,9 +55,7 @@ io.on('connection', (socket) => {
             });
 
             startAuctionTimer();
-        } else {
-            socket.emit('bidError', 'Your bid must be higher than the current bid.');
-        }
+        }        
     });
 
     // Timer functionality
