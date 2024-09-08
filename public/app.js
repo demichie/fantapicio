@@ -73,7 +73,7 @@ socket.on('blockTimer', (bidderName) => {
     document.getElementById('block-section').style.display = 'none';
     document.getElementById('bidder-section').style.display = 'block';
     // bidder-button.textContent = `ciccio is bidding`;
-    document.getElementById("bidder-button").value= "Hide Filter";
+    document.getElementById('bidder-button').innerText = 'Show filter';
     blockTimerButton.classList.add('red');
 });
 
