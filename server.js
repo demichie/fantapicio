@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
     socket.on('placeBid', (data) => {
         const bidder = participants.find(p => p.name === data.name);
         
-        if (data.amount > currentBid && (data.amount+bidder.remainingPlayers-1 <= bidder.budget ) {
+        if (data.amount > currentBid && (data.amount+bidder.remainingPlayers-1) <= bidder.budget ) {
             currentBid = data.amount;
             currentBidder = data.name;
 
