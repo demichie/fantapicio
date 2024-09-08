@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
         
         if (data.amount > currentBid) {
             socket.emit('bidError', 'Your bid must be higher than the current bid.');
-        } else if ( data.amount+bidder.remainingPlayers-1 <= bidder.budget) {
+        } else if ( data.amount+bidder.remainingPlayers-1 >= bidder.budget) {
             socket.emit('bidError', 'Your bid must be smaller.');
         } else {
             currentBidder = data.name;
