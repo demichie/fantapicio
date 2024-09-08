@@ -58,6 +58,7 @@ socket.on('playerNominated', (data) => {
     document.getElementById('current-auction').style.display = 'block';
     document.getElementById('block-section').style.display = 'block';
     document.getElementById('bid-section').style.display = 'none';
+    document.getElementById('bidder-section').style.display = 'none';
 });
 
 // Block the timer when the button is clicked
@@ -65,11 +66,13 @@ blockTimerButton.addEventListener('click', () => {
     document.getElementById('bid-section').style.display = 'block';
     document.getElementById('block-section').style.display = 'none';
     socket.emit('blockTimer', userName);
+    document.getElementById('bidder-section').style.display = 'none';
 });
 
 // Update the button text and timer
 socket.on('blockTimer', (bidderName) => {
-    blockTimerButton.textContent = `${bidderName} is bidding`;
+    document.getElementById('bidder-section').style.display = 'block';
+    bidderButton.textContent = `${bidderName} is bidding`;
     blockTimerButton.classList.add('red');
 });
 
@@ -88,10 +91,10 @@ socket.on('bidPlaced', (data) => {
     currentBidEl.textContent = data.amount;
     currentBidderEl.textContent = data.bidder;
     blockTimerButton.textContent = 'Block Timer and Bid';
-    blockTimerButton.classList.remove('red');
     blockTimerButton.classList.add('green');
     document.getElementById('block-section').style.display = 'block';
     document.getElementById('bid-section').style.display = 'none';
+    document.getElementById('bidder-section').style.display = 'none';
 });
 
 // Update the timer display

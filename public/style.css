@@ -77,6 +77,11 @@ button:disabled {
     background-color: green; /* Green color to reset after bid is placed */
 }
 
+#bidder-button.red {
+    background-color: red; /* Red color when the timer is blocked */
+}
+
+
 /* Timer Styling */
 #timer {
     font-size: 48px; /* Initial size of the timer */
