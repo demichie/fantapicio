@@ -78,7 +78,7 @@ socket.on('playerNominated', (data) => {
 blockTimerButton.addEventListener('click', () => {
     socket.emit('getParticipants');
     const bidder = participants.find(p => p.name === userName);
-    alert(bidder.budget + ' -- ' + bidder.name + ' -- ' + bidder.remainingPlayers );
+    alert(bidder.budget >= bidder.remainingPlayers );
     if ( bidder.budget >= bidder.remainingPlayers ) {
         document.getElementById('bid-section').style.display = 'block';
         socket.emit('blockTimer', userName);
