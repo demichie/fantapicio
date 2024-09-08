@@ -14,34 +14,35 @@ let auctionTimeout = null;
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
+    // Handle participant registration
     socket.on('registerParticipant', (name) => {
         participants.push({ name: name, budget: 500, remainingPlayers: 25 });
         io.emit('participantsUpdate', participants);
-
+        
         if (participants.length > 1) {
             io.emit('gameReady');
         }
     });
 
+    // Handle player nomination
     socket.on('nominatePlayer', (data) => {
         currentPlayer = data.player;
         currentBidder = data.name;
-        currentBid = 1; // Start bid at 1
+        currentBid = 1; // Starting bid of 1
 
         io.emit('playerNominated', {
             player: currentPlayer,
             currentBid: currentBid,
             bidder: currentBidder
         });
-
         startAuctionTimer();
     });
 
+    // Handle placing bids
     socket.on('placeBid', (data) => {
         const bidder = participants.find(p => p.name === data.name);
         
-        if (data.amount > currentBid && (data.amount+bidder.remainingPlayers-1) <= bidder.budget ) {
-            currentBid = data.amount;
+        if (data.amount > currentBid && (data.amount+bidder.remainingPlayers-1) <= bidder.budget ) {            currentBid = data.amount;
             currentBidder = data.name;
 
             io.emit('bidPlaced', {
@@ -55,16 +56,9 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Handle blocking the timer
-    socket.on('blockTimer', () => {
-        stopAuctionTimer(); // Stop the timer immediately when a user blocks the timer
-
-        // Emit an event to allow this user to place a bid
-        io.emit('allowBid');
-    });
-
+    // Timer functionality
     function startAuctionTimer() {
-        stopAuctionTimer(); // Stop any previous timer
+        if (auctionTimeout) clearTimeout(auctionTimeout);
         let timeLeft = 10;
 
         const interval = setInterval(() => {
@@ -80,12 +74,10 @@ io.on('connection', (socket) => {
     }
 
     function stopAuctionTimer() {
-        if (auctionTimeout) {
-            clearInterval(auctionTimeout);
-            auctionTimeout = null;
-        }
+        clearInterval(auctionTimeout);
     }
 
+    // Handle auction end
     function auctionEnd() {
         const winner = participants.find(p => p.name === currentBidder);
         if (winner) {
@@ -99,12 +91,20 @@ io.on('connection', (socket) => {
             bid: currentBid
         });
 
+        // Reset the auction for the next player nomination
         currentPlayer = null;
         currentBid = 1;
         currentBidder = null;
 
         io.emit('participantsUpdate', participants);
     }
+
+    // Handle timer block
+    socket.on('blockTimer', (name) => {
+        currentBidder = name;
+        io.emit('blockTimer', currentBidder);
+        stopAuctionTimer();
+    });
 });
 
 server.listen(3000, () => {

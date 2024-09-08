@@ -1,89 +1,130 @@
-/* Global Styles */
+/* General Styles */
 body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 20px;
-  background-color: #f5f5f5;
-  height: 100vh;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    background-color: #f4f4f4;
 }
 
-h2, h3, h4, p {
-  text-align: center;
-  margin-bottom: 20px;
+/* Image Styling */
+header img {
+    width: 100%; /* Full width on mobile */
+    max-height: 20vh; /* Max height is 20% of the viewport height */
+    object-fit: cover;
 }
 
-input, button {
-  padding: 10px;
-  margin: 10px;
-  font-size: 1.2rem;
+/* Centering Content */
+#name-input-section, 
+#auction-section, 
+#nomination-section, 
+#current-auction, 
+#block-section, 
+#bid-section {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Center the input and other sections */
-#name-input-section, #auction-section, #nomination-section, #current-auction, #block-section, #bid-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-/* Header Image */
-.header-image img {
-  width: 100%; /* Full width on all screens */
-  height: auto; /* Maintain aspect ratio */
-  max-height: 20vh; /* Maximum height: 20% of the viewport height */
-  object-fit: cover; /* Ensure the image covers the container */
-  margin-bottom: 20px;
-}
-
-/* Style the large button */
-.large-button {
-  padding: 20px 40px;
-  font-size: 1.5rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.large-button:hover {
-  background-color: #0056b3;
-}
-
-/* Responsive font sizes for smaller screens */
-@media only screen and (max-width: 600px) {
-  body {
+/* Input and Button Styles */
+input[type="text"], 
+input[type="number"] {
     padding: 10px;
-  }
+    font-size: 18px;
+    width: 80%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-  h2, h3, h4, p {
-    font-size: 1.2rem;
-  }
-
-  input, button {
-    width: 100%;
-    max-width: 100%;
-    font-size: 1.4rem;
-  }
-
-  /* Adjust button size on small screens */
-  .large-button {
+button {
     padding: 15px 30px;
-    font-size: 1.2rem;
-  }
+    font-size: 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-  input[type="text"], input[type="number"] {
-    font-size: 1.2rem;
-  }
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
 
-  /* Adjust image height on smaller screens */
-  .header-image img {
-    max-height: 25vh; /* Slightly increase height for smaller screens */
-  }
+/* Block Timer Button Styles */
+#block-timer-button {
+    background-color: green; /* Start with green */
+    color: white;
+    padding: 20px 40px;
+    font-size: 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for color change */
+}
+
+#block-timer-button.red {
+    background-color: red; /* Red color when the timer is blocked */
+}
+
+#block-timer-button.green {
+    background-color: green; /* Green color to reset after bid is placed */
+}
+
+/* Timer Styling */
+#timer {
+    font-size: 48px; /* Initial size of the timer */
+    font-weight: bold;
+    color: #333;
+    transition: font-size 0.5s ease; /* Smooth size transition */
+}
+
+#timer.size1 {
+    font-size: 48px; /* Start size */
+}
+
+#timer.size2 {
+    font-size: 56px; /* Bigger as time advances */
+}
+
+#timer.size3 {
+    font-size: 64px; /* Even bigger near the end */
+}
+
+#timer.size4 {
+    font-size: 72px; /* Largest size when timer ends */
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    h2, h3, p {
+        font-size: 18px;
+    }
+
+    #block-timer-button {
+        font-size: 20px;
+        padding: 15px 30px;
+    }
+
+    input[type="text"], 
+    input[type="number"] {
+        font-size: 16px;
+        width: 90%;
+    }
+
+    button {
+        font-size: 18px;
+        padding: 12px 24px;
+    }
+
+    #timer {
+        font-size: 36px; /* Smaller timer on mobile initially */
+    }
 }
 
