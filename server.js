@@ -24,6 +24,11 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Handle request for participants data from client
+    socket.on('getParticipants', () => {
+        io.emit('participantsData', participants); // Send participants data to the requesting client
+    });
+
     // Handle player nomination
     socket.on('nominatePlayer', (data) => {
         currentPlayer = data.player;

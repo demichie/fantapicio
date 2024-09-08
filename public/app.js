@@ -1,5 +1,6 @@
 const socket = io();
 let userName = null;
+let participants = []; // To store participants on the client-side
 
 const nameInputSection = document.getElementById('name-input-section');
 const auctionSection = document.getElementById('auction-section');
@@ -38,6 +39,11 @@ socket.on('participantsUpdate', (participants) => {
     });
 });
 
+// Listen for participants data from the server
+socket.on('participantsData', (data) => {
+    participants = data; // Update the participants list on the client-side
+});
+
 // Notify when the game is ready
 socket.on('gameReady', () => {
     auctionSection.style.display = 'block';
@@ -68,7 +74,9 @@ socket.on('playerNominated', (data) => {
 
 // Block the timer when the button is clicked
 blockTimerButton.addEventListener('click', () => {
-    //const bidder = participants.find(p => p.name === userName);
+
+    socket.emit('getParticipants');
+    const bidder = participants.find(p => p.name === userName);
 
     //if ( bidder.budget >= bidder.remainingPlayers ) {
         document.getElementById('bid-section').style.display = 'block';
