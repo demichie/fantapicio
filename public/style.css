@@ -134,8 +134,7 @@ button:disabled {
 }
 
 #name-input-section {
-  background: #FF7A59;
-  opacity: 0.3;
+  background-color: rgba(0,0,0,.5);
 }
 
 /* Responsive Design for Mobile */
