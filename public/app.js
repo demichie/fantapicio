@@ -83,8 +83,6 @@ document.getElementById('nominate-button').addEventListener('click', () => {
     const playerName = playerInput.value;
     if (playerName) {
         socket.emit('nominatePlayer', { name: userName, player: playerName });
-        currentBidder = userName;
-        currentBid = 1;
     }
 });
 
@@ -93,6 +91,8 @@ socket.on('playerNominated', (data) => {
     currentPlayerEl.textContent = data.player;
     currentBidEl.textContent = data.currentBid;
     currentBidderEl.textContent = data.bidder;
+    currentBidder = data.bidder;
+    currentBid = 1;
     nominationSection.style.display = 'none';
     document.getElementById('current-auction').style.display = 'block';
     document.getElementById('block-section').style.display = 'block';
